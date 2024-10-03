@@ -1,0 +1,25 @@
+
+
+body {
+  margin: 0;
+ padding: 0;
+ background-color: rgb(250, 250, 250);
+}
+.login-background {
+  background-image: url('./assets/main bg.jpeg') !important; 
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat; 
+  min-height: 100vh; 
+  padding: 4rem; 
+  color: #fff; 
+}
+.home-background {
+  background-image: url('./assets/mg.png') !important; 
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat; 
+  min-height: 100vh; 
+  padding: 4rem; 
+  color: #fff; 
+}
