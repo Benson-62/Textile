@@ -69,6 +69,13 @@ const Navbar = () => {
           >
             Login
           </Button>
+          <Button
+            component={Link}
+            to="/t"
+            sx={{ textDecoration: 'none', color: 'white' }}
+          >
+            Admin
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>

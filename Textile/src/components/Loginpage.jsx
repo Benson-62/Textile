@@ -30,6 +30,10 @@ const LoginPage = () => {
     }
   };
 
+  const handleSignUp = () => {
+    navigate('/signup'); // Redirect to Sign Up page
+  };
+
   return (
     <div className="login-background" style={{ 
       background: 'linear-gradient(to right, #8e44ad, #3498db)', // Gradient background
@@ -46,9 +50,9 @@ const LoginPage = () => {
           borderRadius: 2,
           boxShadow: 5,
           backgroundColor: 'white',
-          transition: 'transform 0.2s', // Smooth transition effect
+          transition: 'transform 0.2s',
           '&:hover': {
-            transform: 'scale(1.02)', // Slightly grow on hover
+            transform: 'scale(1.02)',
           }
         }}
       >
@@ -100,13 +104,7 @@ const LoginPage = () => {
                 </Typography>
               )}
 
-              <Box
-                sx={{
-                  marginTop: 2,
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
+              <Box sx={{ marginTop: 2, display: 'flex', justifyContent: 'center' }}>
                 <Button
                   type="submit"
                   variant="contained"
@@ -128,6 +126,31 @@ const LoginPage = () => {
             </Form>
           )}
         </Formik>
+
+        {/* Sign Up Option */}
+        <Box sx={{ marginTop: 2, textAlign: 'center' }}>
+       
+          <Typography variant="body2">
+            New user?{' '}
+            <Button 
+              variant="contained" // Make it look like the Login button
+              onClick={handleSignUp}
+              sx={{
+                width: '100%',
+                backgroundColor: '#3498db', // Button background color
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#2980b9', // Darker on hover
+                },
+                borderRadius: 1, // Rounded corners for button
+                transition: 'background-color 0.3s', // Smooth transition for background color
+                marginTop: 1 // Add some spacing on top
+              }}
+            >
+              Sign Up
+            </Button>
+          </Typography>
+        </Box>
       </Box>
     </div>
   );

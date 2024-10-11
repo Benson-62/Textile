@@ -39,7 +39,7 @@ const HomePage = () => {
         </Typography>
 
         {/* Featured Collection */}
-        <Typography variant="h5"   component="h1" sx={{ marginBottom: 2, color: 'Black' }}>
+        <Typography variant="h5" component="h1" sx={{ marginBottom: 2, color: 'Black' }}>
           Discover Our Latest Collections
         </Typography>
 
@@ -57,6 +57,10 @@ const HomePage = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  transition: 'transform 0.3s ease',
+                  '&:hover': {
+                    transform: 'scale(1.05)', // Hover effect to scale the image
+                  },
                 }}
               >
                 <Button

@@ -23,3 +23,12 @@ body {
   padding: 4rem; 
   color: #fff; 
 }
+.signup-background {
+  background-image: url('./assets/newsign.webp') !important; 
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat; 
+  min-height: 100vh; 
+  padding: 4rem; 
+  color: #fff; 
+}
