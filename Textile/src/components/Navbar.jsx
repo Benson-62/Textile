@@ -1,10 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { AppBar, Box, Button, Toolbar, Typography, Icon } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [visible, setVisible] = useState(true);
+  const [user, setUser] = useState(null); // State to hold user data
   const timerId = useRef(null); // Use useRef to store timer ID
+  const navigate = useNavigate();
+
+  // Fetch user data from local storage
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    setUser(storedUser);
+  }, []);
 
   // Set timer to hide navbar after 5 seconds
   useEffect(() => {
@@ -35,6 +43,12 @@ const Navbar = () => {
     };
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem('user'); // Clear user data from local storage
+    setUser(null); // Update state
+    navigate('/'); // Redirect to login page
+  };
+
   return (
     <Box
       sx={{
@@ -55,20 +69,37 @@ const Navbar = () => {
             <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>P</span>
           </Icon>
 
-          <Button
-            component={Link}
-            to="/home"
-            sx={{ textDecoration: 'none', color: 'white' }}
-          >
+          <Button component={Link} to="/home" sx={{ textDecoration: 'none', color: 'white' }}>
             Home
           </Button>
-          <Button
-            component={Link}
-            to="/"
-            sx={{ textDecoration: 'none', color: 'white' }}
-          >
-            Login
-          </Button>
+          
+          {user ? ( // Check if user is logged in
+            <>
+              <Button
+                component={Link}
+                to="/u" // Route to user profile page
+                sx={{ textDecoration: 'none', color: 'white' }}
+              >
+                Profile
+              </Button>
+              <Button
+                onClick={handleLogout}
+                sx={{ textDecoration: 'none', color: 'white' }}
+              >
+                Logout
+              </Button>
+            </>
+          ) : (
+            <Button
+              component={Link}
+              to="/"
+              sx={{ textDecoration: 'none', color: 'white' }}
+            >
+              Login
+            </Button>
+          )}
+          
+          {/* Always visible Admin button */}
           <Button
             component={Link}
             to="/t"

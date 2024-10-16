@@ -5,6 +5,8 @@ import HomePage from './components/Homepage';
 import Navbar from './components/Navbar';
 import AdminPage from './components/Admin';
 import SignUpPage from './components/Signup';
+import UserProfile from './components/Userprofile';
+import SummerCollections from './components/SummerCollections';
 
 
 
@@ -16,8 +18,10 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/collections/summer" element={<SummerCollections />} />
         <Route path="/t" element={<AdminPage/>} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/u" element={<UserProfile />} />
       </Routes>
     </Router>
   

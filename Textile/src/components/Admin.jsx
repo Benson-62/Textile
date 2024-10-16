@@ -1,33 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Table, TableHead, TableBody, TableRow, TableCell, Paper, Button } from '@mui/material';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AdminPage = () => {
   const [users, setUsers] = useState(null);
   const [bills, setBills] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   const isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
+
+  //   if (!isAdmin) {
+  //     alert('Access denied. Admins only.');
+  //     navigate('/'); // Redirect to the homepage or another page if not an admin
+  //   }
+  // }, [navigate]);
 
   // Fetching user details and bills
+  const fetchUsersAndBills = async () => {
+    try {
+      const [userResponse, billsResponse] = await Promise.all([
+        axios.get('/api/users'), // API endpoint for users
+        axios.get('/api/bills'), // Corrected the endpoint for bills
+      ]);
+
+      setUsers(Array.isArray(userResponse.data) ? userResponse.data : []);
+      setBills(Array.isArray(billsResponse.data) ? billsResponse.data : []);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setError('Failed to load data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchUsersAndBills = async () => {
-      try {
-        const [userResponse, billsResponse] = await Promise.all([
-          axios.get('/api/users'), // API endpoint for users
-          axios.get('/api/bills'), // API endpoint for bills
-        ]);
-
-        setUsers(Array.isArray(userResponse.data) ? userResponse.data : []);
-        setBills(Array.isArray(billsResponse.data) ? billsResponse.data : []);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('Failed to load data');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchUsersAndBills();
+
+    const interval = setInterval(() => {
+      fetchUsersAndBills();
+    }, 5000); // Fetch data every 5 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleViewUserDetails = (userId) => {
@@ -35,12 +52,16 @@ const AdminPage = () => {
   };
 
   const handleDeleteUser = async (userId) => {
-    try {
-      await axios.delete(`/api/users/${userId}`);
-      setUsers(users.filter((user) => user.id !== userId));
-    } catch (error) {
-      console.error('Error deleting user:', error);
-      setError('Failed to delete user');
+    const confirmDelete = window.confirm('Are you sure you want to delete this user?');
+
+    if (confirmDelete) {
+      try {
+        await axios.delete(`/api/users/${userId}`);
+        setUsers(users.filter((user) => user.id !== userId));
+      } catch (error) {
+        console.error('Error deleting user:', error);
+        setError('Failed to delete user');
+      }
     }
   };
 
@@ -80,21 +101,8 @@ const AdminPage = () => {
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.role}</TableCell>
                   <TableCell>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => handleViewUserDetails(user.id)}
-                    >
-                      View
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      sx={{ marginLeft: 1 }}
-                      onClick={() => handleDeleteUser(user.id)}
-                    >
-                      Delete
-                    </Button>
+                    <Button onClick={() => handleViewUserDetails(user.id)}>View</Button>
+                    <Button onClick={() => handleDeleteUser(user.id)}>Delete</Button>
                   </TableCell>
                 </TableRow>
               ))

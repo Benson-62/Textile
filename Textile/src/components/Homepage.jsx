@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography, Grid, Button } from '@mui/material';
+import { Link } from 'react-router-dom';  // Import Link
 
 const HomePage = () => {
   const collections = [
@@ -64,7 +65,8 @@ const HomePage = () => {
                 }}
               >
                 <Button
-                  href={collection.link}
+                  component={Link}  // Use Link component for navigation
+                  to={collection.link}  // Navigate to the link
                   variant="contained"
                   sx={{
                     backgroundColor: 'rgba(0,0,0,0.6)',

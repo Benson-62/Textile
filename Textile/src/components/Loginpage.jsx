@@ -17,9 +17,16 @@ const LoginPage = () => {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const response = await axios.post('/api/login', values);
+      const response = await axios.post('http://localhost:5000/api/login', values);
       if (response.status === 200) {
+        const { user } = response.data;
+        localStorage.setItem('user', JSON.stringify(user)); // Save user data to local storage
+        
+        // Redirect to Home page after login
         navigate('/home');
+
+        // Refresh the page to apply changes (if needed)
+        window.location.reload(); // Reloads the page after redirection
       } else {
         setErrors({ submit: 'Login failed. Please try again.' });
       }
@@ -33,15 +40,38 @@ const LoginPage = () => {
   const handleSignUp = () => {
     navigate('/signup'); // Redirect to Sign Up page
   };
+  const handleLogin = async (email, password) => {
+    try {
+      const response = await axios.post('/api/login', { email, password });
+      const { user, isAdmin } = response.data;
+  
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('isAdmin', isAdmin); // Store admin status in localStorage
+  
+      if (isAdmin) {
+        // Redirect to admin page if admin
+        navigate('/admin');
+      } else {
+        // Redirect to some other page if not an admin
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
+  };
+  
 
   return (
-    <div className="login-background" style={{ 
-      background: 'linear-gradient(to right, #8e44ad, #3498db)', // Gradient background
-      height: '100vh', 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center' 
-    }}>
+    <div
+      className="login-background"
+      style={{
+        background: 'linear-gradient(to right, #8e44ad, #3498db)', // Gradient background
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <Box
         sx={{
           width: '100%',
@@ -53,13 +83,19 @@ const LoginPage = () => {
           transition: 'transform 0.2s',
           '&:hover': {
             transform: 'scale(1.02)',
-          }
+          },
         }}
       >
-        <Typography variant="h4" sx={{ marginBottom: 2, textAlign: 'center', fontWeight: 'bold', color: '#8e44ad' }}>
+        <Typography
+          variant="h4"
+          sx={{ marginBottom: 2, textAlign: 'center', fontWeight: 'bold', color: '#8e44ad' }}
+        >
           Welcome Back!
         </Typography>
-        <Typography variant="body1" sx={{ marginBottom: 4, textAlign: 'center', color: '#3498db' }}>
+        <Typography
+          variant="body1"
+          sx={{ marginBottom: 4, textAlign: 'center', color: '#3498db' }}
+        >
           Please login to your account
         </Typography>
         <Formik
@@ -129,10 +165,9 @@ const LoginPage = () => {
 
         {/* Sign Up Option */}
         <Box sx={{ marginTop: 2, textAlign: 'center' }}>
-       
           <Typography variant="body2">
             New user?{' '}
-            <Button 
+            <Button
               variant="contained" // Make it look like the Login button
               onClick={handleSignUp}
               sx={{
@@ -144,7 +179,7 @@ const LoginPage = () => {
                 },
                 borderRadius: 1, // Rounded corners for button
                 transition: 'background-color 0.3s', // Smooth transition for background color
-                marginTop: 1 // Add some spacing on top
+                marginTop: 1, // Add some spacing on top
               }}
             >
               Sign Up
