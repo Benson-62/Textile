@@ -139,7 +139,7 @@ const MensFashion = () => {
                 </CardContent>
                 <CardActions>
                   <Button size="small" color="primary" onClick={() => handleAddToCart(product)}>
-                    Add to Cart
+                    Add to Wishlist
                   </Button>
                   <Button size="small" onClick={() => handleEditProduct(product)}>Edit</Button>
                   <Button size="small" color="error" onClick={() => handleDeleteProduct(product.id)}>
@@ -168,10 +168,10 @@ const MensFashion = () => {
           padding: 2,
           overflowY: 'auto',
         }}>
-          <Typography variant="h5" sx={{ marginBottom: 2 }}>Cart</Typography>
-          <Button onClick={() => setCartOpen(false)} sx={{ marginBottom: 2 }} variant="outlined">Close Cart</Button>
+          <Typography variant="h5" sx={{ marginBottom: 2 }}>Wishlist</Typography>
+          <Button onClick={() => setCartOpen(false)} sx={{ marginBottom: 2 }} variant="outlined">Close</Button>
           {cart.length === 0 ? (
-            <Typography>No items in the cart</Typography>
+            <Typography>No items in the Wishlist</Typography>
           ) : (
             <>
               {cart.map((product, index) => (
