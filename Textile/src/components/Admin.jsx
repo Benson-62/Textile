@@ -8,14 +8,15 @@ const AdminPage = () => {
   const [bills, setBills] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // const navigate = useNavigate();
+  const navigate = useNavigate(); // Enable navigation
 
+  // Check if the admin is logged in before displaying the page
   // useEffect(() => {
   //   const isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
 
   //   if (!isAdmin) {
   //     alert('Access denied. Admins only.');
-  //     navigate('/'); // Redirect to the homepage or another page if not an admin
+  //     navigate('/admin-login'); // Redirect to the Admin Login page if not logged in
   //   }
   // }, [navigate]);
 

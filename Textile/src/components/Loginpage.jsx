@@ -19,14 +19,20 @@ const LoginPage = () => {
     try {
       const response = await axios.post('http://localhost:5000/api/login', values);
       if (response.status === 200) {
-        const { user } = response.data;
+        const { user, isAdmin } = response.data; // Check if the user is an admin
         localStorage.setItem('user', JSON.stringify(user)); // Save user data to local storage
-        
-        // Redirect to Home page after login
-        navigate('/home');
+        localStorage.setItem('isAdmin', isAdmin); // Save admin status
 
-        // Refresh the page to apply changes (if needed)
-        window.location.reload(); // Reloads the page after redirection
+        if (isAdmin) {
+          // Redirect to Admin page if the user is an admin
+          navigate('/admin');
+        } else {
+          // Redirect to Home page after login if not admin
+          navigate('/home');
+        }
+
+        // Refresh the page to apply changes
+        window.location.reload(); 
       } else {
         setErrors({ submit: 'Login failed. Please try again.' });
       }
@@ -40,26 +46,10 @@ const LoginPage = () => {
   const handleSignUp = () => {
     navigate('/signup'); // Redirect to Sign Up page
   };
-  const handleLogin = async (email, password) => {
-    try {
-      const response = await axios.post('/api/login', { email, password });
-      const { user, isAdmin } = response.data;
-  
-      localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('isAdmin', isAdmin); // Store admin status in localStorage
-  
-      if (isAdmin) {
-        // Redirect to admin page if admin
-        navigate('/admin');
-      } else {
-        // Redirect to some other page if not an admin
-        navigate('/');
-      }
-    } catch (error) {
-      console.error('Login failed:', error);
-    }
+
+  const handleAdminLogin = () => {
+    navigate('/admin-login'); // Redirect to Admin Login page
   };
-  
 
   return (
     <div
@@ -115,7 +105,7 @@ const LoginPage = () => {
                   required
                   helperText={<ErrorMessage name="email" />}
                   error={Boolean(errors.email)}
-                  sx={{ borderRadius: 1 }} // Rounded corners for input
+                  sx={{ borderRadius: 1 }}
                 />
               </Box>
 
@@ -130,7 +120,7 @@ const LoginPage = () => {
                   required
                   helperText={<ErrorMessage name="password" />}
                   error={Boolean(errors.password)}
-                  sx={{ borderRadius: 1 }} // Rounded corners for input
+                  sx={{ borderRadius: 1 }}
                 />
               </Box>
 
@@ -150,10 +140,10 @@ const LoginPage = () => {
                     backgroundColor: '#3498db', // Button background color
                     color: 'white',
                     '&:hover': {
-                      backgroundColor: '#2980b9', // Darker on hover
+                      backgroundColor: '#2980b9',
                     },
-                    borderRadius: 1, // Rounded corners for button
-                    transition: 'background-color 0.3s', // Smooth transition for background color
+                    borderRadius: 1,
+                    transition: 'background-color 0.3s',
                   }}
                 >
                   {isSubmitting ? 'Logging in...' : 'Login'}
@@ -168,21 +158,45 @@ const LoginPage = () => {
           <Typography variant="body2">
             New user?{' '}
             <Button
-              variant="contained" // Make it look like the Login button
+              variant="contained"
               onClick={handleSignUp}
               sx={{
                 width: '100%',
-                backgroundColor: '#3498db', // Button background color
+                backgroundColor: '#3498db',
                 color: 'white',
                 '&:hover': {
-                  backgroundColor: '#2980b9', // Darker on hover
+                  backgroundColor: '#2980b9',
                 },
-                borderRadius: 1, // Rounded corners for button
-                transition: 'background-color 0.3s', // Smooth transition for background color
-                marginTop: 1, // Add some spacing on top
+                borderRadius: 1,
+                transition: 'background-color 0.3s',
+                marginTop: 1,
               }}
             >
               Sign Up
+            </Button>
+          </Typography>
+        </Box>
+
+        {/* Admin Login Option */}
+        <Box sx={{ marginTop: 2, textAlign: 'center' }}>
+          <Typography variant="body2">
+            Admin?{' '}
+            <Button
+              variant="contained"
+              onClick={handleAdminLogin}
+              sx={{
+                width: '100%',
+                backgroundColor: '#3498db',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#2980b9',
+                },
+                borderRadius: 1,
+                transition: 'background-color 0.3s',
+                marginTop: 1,
+              }}
+            >
+              Admin Login
             </Button>
           </Typography>
         </Box>

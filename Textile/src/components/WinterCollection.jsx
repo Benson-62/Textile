@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 
-const SummerCollection = () => {
+const WinterCollection = () => {
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,10 +26,10 @@ const SummerCollection = () => {
   const [cart, setCart] = useState([]); // State for cart
   const [cartOpen, setCartOpen] = useState(true); // State to control cart visibility
 
-  // Fetch summer collection products
-  const fetchSummerCollections = async () => {
+  // Fetch winter collection products
+  const fetchWinterCollections = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/summer-collection');
+      const response = await axios.get('http://localhost:5000/api/winter-collection');
       setCollections(response.data);
     } catch (error) {
       setError('Failed to load products');
@@ -39,7 +39,7 @@ const SummerCollection = () => {
   };
 
   useEffect(() => {
-    fetchSummerCollections();
+    fetchWinterCollections();
   }, []);
 
   const handleClickOpen = () => {
@@ -55,11 +55,11 @@ const SummerCollection = () => {
   const handleSaveProduct = async () => {
     try {
       if (editItem) {
-        await axios.put(`http://localhost:5000/api/summer-collection/${editItem.id}`, newProduct);
+        await axios.put(`http://localhost:5000/api/winter-collection/${editItem.id}`, newProduct);
       } else {
-        await axios.post('http://localhost:5000/api/summer-collection', newProduct);
+        await axios.post('http://localhost:5000/api/winter-collection', newProduct);
       }
-      fetchSummerCollections();
+      fetchWinterCollections();
       handleClose();
     } catch (error) {
       setError('Failed to save product');
@@ -74,8 +74,8 @@ const SummerCollection = () => {
 
   const handleDeleteProduct = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/summer-collection/${id}`);
-      fetchSummerCollections();
+      await axios.delete(`http://localhost:5000/api/winter-collection/${id}`);
+      fetchWinterCollections();
     } catch (error) {
       setError('Failed to delete product');
     }
@@ -108,7 +108,7 @@ const SummerCollection = () => {
     <Box sx={{ display: 'flex', padding: 4, position: 'relative' }}>
       {/* Products Section */}
       <Box sx={{ flex: 1, paddingRight: 4 }}>
-        <Typography variant="h4" sx={{ marginBottom: 2 }}>Summer Collection</Typography>
+        <Typography variant="h4" sx={{ marginBottom: 2 }}>Winter Collection</Typography>
         <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ marginBottom: 2 }}>
           Add New Product
         </Button>
@@ -253,4 +253,4 @@ const SummerCollection = () => {
   );
 };
 
-export default SummerCollection;
+export default WinterCollection;
